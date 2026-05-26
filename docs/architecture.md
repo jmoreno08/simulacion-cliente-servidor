@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-El proyecto implementa una simulación educativa de comunicación cliente-servidor usando sockets TCP en Python.
+El proyecto implementa una comunicación cliente-servidor usando sockets TCP en Python.
 
 ## Componentes principales
 
