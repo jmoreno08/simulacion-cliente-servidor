@@ -1,6 +1,6 @@
 # Simulación de Red Cliente-Servidor en Python
 
-Proyecto educativo en Python que simula una red cliente-servidor usando sockets TCP, autenticación básica, envío de mensajes, confirmación de recepción y manejo de múltiples clientes simultáneos mediante `threading`.
+Proyecto en Python que simula una red cliente-servidor usando sockets TCP, autenticación básica, envío de mensajes, confirmación de recepción y manejo de múltiples clientes simultáneos mediante `threading`.
 
 ## Tecnologías utilizadas
 
@@ -199,12 +199,3 @@ $env:SERVER_PORT="6000"
 python run_server.py
 ```
 
-## Posibles mejoras futuras
-
-- Guardar usuarios en archivo JSON externo.
-- Agregar cifrado TLS.
-- Implementar chat entre clientes.
-- Agregar interfaz gráfica.
-- Crear pruebas de integración con sockets reales.
-- Usar `asyncio` para una versión asíncrona.
-- Agregar Dockerfile y Docker Compose.
