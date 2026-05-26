@@ -1,0 +1,3 @@
+# El proyecto usa principalmente librerías estándar de Python.
+# pytest es opcional para ejecutar pruebas.
+pytest==8.3.4

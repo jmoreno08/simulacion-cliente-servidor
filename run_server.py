@@ -1,0 +1,7 @@
+"""Punto de entrada para ejecutar el servidor."""
+
+from app.server.server import start_server
+
+
+if __name__ == "__main__":
+    start_server()

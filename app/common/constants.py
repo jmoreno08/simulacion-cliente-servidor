@@ -1,7 +1,12 @@
-# Configuración compartida
-"""
-Aquí se establecerán todas las constantes globales o configuraciones compartidas
-que servirán tanto al cliente como al servidor, por ejemplo, IP y puerto.
-"""
-SERVER_HOST = '127.0.0.1'  # localhost
-SERVER_PORT = 12345  # Puerto predeterminado
+"""Constantes compartidas entre cliente y servidor."""
+
+ENCODING = "utf-8"
+BUFFER_SIZE = 4096
+DEFAULT_HOST = "127.0.0.1"
+DEFAULT_PORT = 5000
+
+MESSAGE_TYPE_LOGIN = "login"
+MESSAGE_TYPE_CHAT = "message"
+MESSAGE_TYPE_EXIT = "exit"
+MESSAGE_TYPE_ACK = "ack"
+MESSAGE_TYPE_ERROR = "error"

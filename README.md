@@ -1,87 +1,210 @@
-# Simulación Cliente-Servidor
+# Simulación de Red Cliente-Servidor en Python
 
-Este proyecto incluye una simulación de red cliente-servidor utilizando Python y sockets TCP. El objetivo es proporcionar una base académica para entender el modelo cliente-servidor, el protocolo TCP y la comunicación concurrente.
+Proyecto educativo en Python que simula una red cliente-servidor usando sockets TCP, autenticación básica, envío de mensajes, confirmación de recepción y manejo de múltiples clientes simultáneos mediante `threading`.
 
-## Modelo Cliente-Servidor
+## Tecnologías utilizadas
 
-El modelo cliente-servidor es una arquitectura de red donde los clientes solicitan servicios o recursos, y el servidor los proporciona. En este caso, los clientes interactúan con el servidor enviando solicitudes y recibiendo respuestas a través de sockets TCP.
+- Python 3.11+
+- socket
+- threading
+- logging
+- json
+- datetime
+- os
+- pytest opcional para pruebas
 
-## Protocolo de Comunicación: TCP
+## Arquitectura general
 
-El protocolo TCP (Protocolo de Control de Transmisión) ofrece un flujo de datos confiable y ordenado entre clientes y servidores. Utilizamos este protocolo debido a su capacidad para garantizar la entrega sin pérdidas de datos.
-
-## Características
-
-- Comunicación mediante sockets TCP.
-- Autenticación de clientes mediante usuario y contraseña.
-- Simulación de envío de mensajes entre cliente y servidor.
-- Confirmación de recepción de mensajes.
-- Soporte para múltiples clientes simultáneamente usando `threading`.
-
-## Requisitos
-
-- Python 3 instalado.
-- Librerías estándar (`socket`, `threading`).
-
-## Estructura del Proyecto
-```
-simulacion-cliente-servidor/
-├── server.py        # Código del servidor
-├── client.py        # Código del cliente
-├── README.md        # Documentación
-└── docs/            # Documentación adicional (opcional)
-```
-
-## Instrucciones
-
-### Crear un entorno virtual (opcional)
-Es recomendable trabajar en un entorno virtual:
-```bash
-python3 -m venv venv
-source venv/bin/activate  # Para Linux/Mac
-venv\Scripts\activate    # Para Windows
+```text
+project-root/
+├── app/
+│   ├── server/
+│   ├── client/
+│   └── common/
+├── docs/
+├── logs/
+├── tests/
+├── screenshots/
+├── requirements.txt
+├── README.md
+├── .gitignore
+├── run_server.py
+└── run_client.py
 ```
 
-### Ejecutar el servidor
-En una terminal, inicie el servidor con:
-```bash
-python3 server.py
-```
+## Modelo cliente-servidor
 
-### Ejecutar el cliente
-En dos terminales diferentes, inicie los clientes con:
-```bash
-python3 client.py
-```
+El modelo cliente-servidor divide el sistema en dos partes principales:
 
-## Ejemplo de flujo de comunicación
-1. Iniciar el servidor.
-2. Cada cliente se conecta al servidor.
-3. El cliente envía credenciales (usuario: `cliente1`, contraseña: `password1`).
-4. Si el login es exitoso:
-    - El cliente puede enviar mensajes.
-    - El servidor confirma recepción.
-5. Si el cliente escribe `salir`, se desconecta.
+- **Servidor:** espera conexiones, autentica usuarios, recibe mensajes y envía respuestas.
+- **Cliente:** se conecta al servidor, inicia sesión y envía mensajes.
 
-## Diagrama de Flujo
+En esta simulación, el servidor puede atender varios clientes al mismo tiempo gracias al uso de hilos.
+
+## Protocolo TCP
+
+TCP es un protocolo orientado a conexión. Esto significa que antes de enviar datos, cliente y servidor establecen una conexión confiable. En este proyecto se usa TCP porque garantiza que los datos lleguen en orden y permite una comunicación estable entre dispositivos.
+
+## Sockets
+
+Un socket es un punto de comunicación entre dos programas en una red. El servidor crea un socket, lo asocia a una dirección y puerto, y queda escuchando conexiones. El cliente crea otro socket y se conecta a esa dirección.
+
+## Diagrama Mermaid del flujo
 
 ```mermaid
 sequenceDiagram
-    participant Cliente1
-    participant Cliente2
-    participant Servidor
-    Cliente1->>Servidor: Conexión
-    Cliente1->>Servidor: Usuario y contraseña
-    Servidor-->>Cliente1: Confirmación de login
-    Cliente1->>Servidor: Mensaje (Hola)
-    Servidor-->>Cliente1: Confirmación ("Mensaje recibido")
-    Cliente2->>Servidor: Conexión
-    Cliente2->>Servidor: Usuario y contraseña
-    Servidor-->>Cliente2: Confirmación de login
+    participant C1 as Cliente 1
+    participant C2 as Cliente 2
+    participant S as Servidor TCP
+
+    C1->>S: Solicitud de conexión
+    S-->>C1: Conexión aceptada
+    C2->>S: Solicitud de conexión
+    S-->>C2: Conexión aceptada
+
+    C1->>S: Login usuario/contraseña
+    S-->>C1: Login exitoso
+
+    C2->>S: Login usuario/contraseña
+    S-->>C2: Login exitoso
+
+    C1->>S: Mensaje
+    S-->>C1: Mensaje recibido correctamente
+
+    C2->>S: Mensaje
+    S-->>C2: Mensaje recibido correctamente
 ```
 
-## Notas Importantes
+## Crear entorno virtual
 
-- Los usuarios y contraseñas están definidos en el archivo `server.py`.
-- El cliente puede desconectar la sesión escribiendo `salir` en la terminal.
-- Para una prueba funcional, se recomienda usar dos terminales para clientes distintos.
+### Windows PowerShell
+
+```bash
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+```
+
+Si PowerShell bloquea la activación:
+
+```bash
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+
+### Windows CMD
+
+```bash
+python -m venv venv
+venv\Scripts\activate.bat
+```
+
+### Linux
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### macOS
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+## Instalar dependencias
+
+```bash
+pip install -r requirements.txt
+```
+
+## Ejecutar servidor
+
+Desde la raíz del proyecto:
+
+```bash
+python run_server.py
+```
+
+Salida esperada:
+
+```text
+Servidor iniciado en 127.0.0.1:5000
+Esperando conexiones de clientes...
+```
+
+## Ejecutar dos clientes simultáneos
+
+Abre dos terminales diferentes, activa el entorno virtual en cada una y ejecuta:
+
+```bash
+python run_client.py
+```
+
+Usuarios de prueba:
+
+| Usuario | Contraseña |
+|---|---|
+| cliente1 | 1234 |
+| cliente2 | abcd |
+| admin | admin123 |
+
+## Ejemplo de uso
+
+Cliente:
+
+```text
+Conectado al servidor 127.0.0.1:5000
+Usuario: cliente1
+Contraseña: ****
+Servidor: Login exitoso
+Mensaje: Hola servidor
+Servidor: Mensaje recibido correctamente
+Mensaje: salir
+Servidor: Conexión cerrada
+```
+
+Servidor:
+
+```text
+Cliente conectado: 127.0.0.1:54321
+Usuario autenticado: cliente1
+Mensaje recibido de cliente1: Hola servidor
+Confirmación enviada a cliente1
+Usuario salió: cliente1
+```
+
+## Ejecutar pruebas
+
+```bash
+pytest
+```
+
+## Configuración por variables de entorno
+
+Puedes cambiar host y puerto así:
+
+### Linux/macOS
+
+```bash
+export SERVER_HOST=127.0.0.1
+export SERVER_PORT=6000
+python run_server.py
+```
+
+### Windows PowerShell
+
+```bash
+$env:SERVER_HOST="127.0.0.1"
+$env:SERVER_PORT="6000"
+python run_server.py
+```
+
+## Posibles mejoras futuras
+
+- Guardar usuarios en archivo JSON externo.
+- Agregar cifrado TLS.
+- Implementar chat entre clientes.
+- Agregar interfaz gráfica.
+- Crear pruebas de integración con sockets reales.
+- Usar `asyncio` para una versión asíncrona.
+- Agregar Dockerfile y Docker Compose.
