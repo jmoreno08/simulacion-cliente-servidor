@@ -94,7 +94,7 @@ Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 
 ```bash
 python -m venv venv
-venv\Scripts\activate.bat
+venv\Scripts\activate
 ```
 
 ### Linux
